@@ -1,7 +1,7 @@
 #include <Adafruit_NeoPixel.h>
 
 #define LED_PIN 2
-#define LED_COUNT 5
+#define LED_COUNT 10
 
 // Default color
 int red = 5;
@@ -44,7 +44,7 @@ void loop() {
     delay(200);
   }
   else if (digitalRead(4) == 0) { 
-    for (int i = (LED_COUNT-1)/2; i <= (LED_COUNT-1); i++) {
+    for (int i = round((LED_COUNT-1)/2+1); i <= (LED_COUNT-1); i++) {
       strip.setPixelColor(i, 255, 50, 0);
       delay(200);
       strip.show();
