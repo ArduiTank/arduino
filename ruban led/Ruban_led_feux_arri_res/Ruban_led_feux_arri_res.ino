@@ -21,7 +21,7 @@ void setup() {
   // put your setup code here, to run once:
   strip.begin();
   strip.show();
-  strip.setBrightness(255);
+  strip.setBrightness(100);
 
   pinMode(3, INPUT); // Clignotant gauche
   pinMode(4, INPUT); // Clignotant droit
@@ -35,7 +35,7 @@ void loop() {
   if (reset == 0 and (digitalRead(3) == 0 or digitalRead(4) == 0 or digitalRead(5) == 0)) {
     Serial.print(millis());
     Serial.println(millis()%1000);
-    delay(4);
+    delay(40);
     if (millis()%1000 == 0) {
       iteration += 1;
     }
