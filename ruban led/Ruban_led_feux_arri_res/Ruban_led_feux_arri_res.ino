@@ -13,6 +13,7 @@ int orange_green = 50;
 int orange_blue = 0;
 
 int iteration = 0;
+int reset = 1;
 
 Adafruit_NeoPixel strip (LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
 
@@ -20,17 +21,29 @@ void setup() {
   // put your setup code here, to run once:
   strip.begin();
   strip.show();
-  strip.setBrightness(100);
+  strip.setBrightness(255);
 
   pinMode(3, INPUT); // Clignotant gauche
   pinMode(4, INPUT); // Clignotant droit
   pinMode(5, INPUT); // Feu de détresse
   pinMode(6, INPUT); // Avance
+
+  Serial.begin(9600);
 }
 
 void loop() {
+  if (reset == 0 and (digitalRead(3) == 0 or digitalRead(4) == 0 or digitalRead(5) == 0)) {
+    Serial.print(millis());
+    Serial.println(millis()%1000);
+
+    if (millis()%1000 == 0) {
+      iteration += 1;
+    }
+  }
   // Couleur si tank bouge
-  if (digitalRead(6) == 0) {
+  else if (digitalRead(6) == 0) {
+    iteration = 0;
+    reset = 0;
     for (int i = 0; i <= (LED_COUNT-1); i++) {
       strip.setPixelColor(i, 255, 0, 0);
     }
@@ -38,15 +51,12 @@ void loop() {
   }
   // Couleur par défaut
   else {
+    iteration = 0;
+    reset = 0;
     for (int i = 0; i <= (LED_COUNT-1); i++) {
       strip.setPixelColor(i, red, green, blue);
     }
     strip.show();
-  }
-  if (digitalRead(3) == 0 or digitalRead(4) == 0 or digitalRead(5) == 0) {
-    if (millis()%200 == 0) {
-      iteration += 1;
-    }
   }
   
   if (digitalRead(3) == 0) {
@@ -56,10 +66,11 @@ void loop() {
       strip.show();
     }
     delay(200);*/
-    strip.setPixelColor((LED_COUNT-1)/2-iteration, orange_red, orange_green, orange_blue);
+    strip.setPixelColor(((LED_COUNT-1)/2)-iteration, orange_red, orange_green, orange_blue);
     strip.show();
-    if (iteration >= (LED_COUNT-1)) {
+    if (iteration >= ((LED_COUNT)/2)) {
       iteration = 0;
+      reset = 1;
     }
   }
   
