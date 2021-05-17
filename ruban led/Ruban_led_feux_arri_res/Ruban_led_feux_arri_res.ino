@@ -12,7 +12,7 @@ int orange_red = 255;
 int orange_green = 50;
 int orange_blue = 0;
 
-int interation = 0;
+int iteration = 0;
 
 Adafruit_NeoPixel strip (LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
 
@@ -45,18 +45,24 @@ void loop() {
   }
   if (digitalRead(3) == 0 or digitalRead(4) == 0 or digitalRead(5) == 0) {
     if (millis()%200 == 0) {
-      interation += 1;
+      iteration += 1;
     }
   }
   
   if (digitalRead(3) == 0) {
-    for (int i = 0; i <= (LED_COUNT-1)/2; i++) {
+    /*for (int i = 0; i <= (LED_COUNT-1)/2; i++) {
       strip.setPixelColor((LED_COUNT-1)/2-i, orange_red, orange_green, orange_blue);
       delay(200);
       strip.show();
     }
-    delay(200);
+    delay(200);*/
+    strip.setPixelColor((LED_COUNT-1)/2-iteration, orange_red, orange_green, orange_blue);
+    strip.show();
+    if (iteration >= (LED_COUNT-1)) {
+      iteration = 0;
+    }
   }
+  
   else if (digitalRead(4) == 0) {
     if (LED_COUNT%2 == 0) {
       for (int i = round((LED_COUNT-1)/2+1); i <= (LED_COUNT-1); i++) {
