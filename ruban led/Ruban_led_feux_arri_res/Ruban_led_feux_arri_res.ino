@@ -15,6 +15,8 @@ int orange_blue = 0;
 int iteration = 0;
 int reset = 1;
 
+int time_now = 0;
+
 Adafruit_NeoPixel strip (LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 void setup() {
@@ -32,11 +34,13 @@ void setup() {
 }
 
 void loop() {
+  time_now = millis()%1000
   if (reset == 0 and (digitalRead(3) == 0 or digitalRead(4) == 0 or digitalRead(5) == 0)) {
     Serial.print(millis());
     Serial.println(millis()%1000);
     delay(40);
-    if (millis()%1000 == 0) {
+    if (time_now >= 1000) {
+      time_now = 0
       iteration += 1;
     }
   }
