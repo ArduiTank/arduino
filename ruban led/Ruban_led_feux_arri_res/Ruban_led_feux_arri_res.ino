@@ -35,7 +35,7 @@ void loop() {
   if (reset == 0 and (digitalRead(3) == 0 or digitalRead(4) == 0 or digitalRead(5) == 0)) {
     Serial.print(millis());
     Serial.println(millis()%1000);
-
+    delay(4);
     if (millis()%1000 == 0) {
       iteration += 1;
     }
