@@ -34,13 +34,13 @@ void setup() {
 }
 
 void loop() {
-  time_now = millis()%1000
+  time_now = millis()%1000;
   if (reset == 0 and (digitalRead(3) == 0 or digitalRead(4) == 0 or digitalRead(5) == 0)) {
     Serial.print(millis());
     Serial.println(millis()%1000);
     delay(40);
     if (time_now >= 1000) {
-      time_now = 0
+      time_now = 0;
       iteration += 1;
     }
   }
