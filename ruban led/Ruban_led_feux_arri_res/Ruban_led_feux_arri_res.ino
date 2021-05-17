@@ -34,15 +34,10 @@ void setup() {
 }
 
 void loop() {
-  time_now = millis()%1000;
+  time_now = millis()/200;
   if (reset == 0 and (digitalRead(3) == 0 or digitalRead(4) == 0 or digitalRead(5) == 0)) {
-    Serial.print(millis());
-    Serial.println(millis()%1000);
-    delay(40);
-    if (time_now >= 1000) {
-      time_now = 0;
-      iteration += 1;
-    }
+    Serial.println(time_now%((LED_COUNT)/2));
+    iteration += time_now%((LED_COUNT)/2);
   }
   // Couleur si tank bouge
   else if (digitalRead(6) == 0) {
