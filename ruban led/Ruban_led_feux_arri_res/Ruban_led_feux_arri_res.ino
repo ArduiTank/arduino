@@ -37,7 +37,7 @@ void loop() {
   if (reset == 0 and (digitalRead(3) == 0 or digitalRead(4) == 0 or digitalRead(5) == 0)) {
     if (time_now = millis()/200) {
       iteration += 1;
-      if (iteration == 2) {
+      if (iteration == 3) {
         iteration = 0;
       }
     }
