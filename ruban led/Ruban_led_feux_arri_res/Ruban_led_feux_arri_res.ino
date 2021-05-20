@@ -42,6 +42,7 @@ void loop() {
       iteration += 1;
       if (iteration >= 3) {
         iteration = 0;
+        reset = 1;
       }
       Serial.println("PLOP");
     }
