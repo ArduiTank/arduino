@@ -6,4 +6,4 @@ Sur cette partie Arduino, vous trouverez :
 * Le code pour la télécommande du robot
 
 ## Réseaux
-[Site](http://arduitank.be) - [GitHub](https://github.com/Tank-io)
+[Site](https://arduitank.be) - [GitHub](https://github.com/ArduiTank) - [Discord](https://discord.gg/D77Vxmehk7)
