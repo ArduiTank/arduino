@@ -35,7 +35,7 @@ void setup() {
 }
 
 void loop() {
-  now_time = millis()/500;
+  now_time = millis()/200;
   if (reset == 0 and (digitalRead(3) == 0 or digitalRead(4) == 0 or digitalRead(5) == 0)) {
     if (now_time != previous_time) {
       previous_time = now_time;
