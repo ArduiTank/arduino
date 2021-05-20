@@ -69,7 +69,8 @@ void loop() {
       strip.show();
     }
   }
-  
+
+  // Chenillard lampes arrière
   else if (digitalRead(4) == 0) {
     if (LED_COUNT%2 == 0) {
       for (int i = round((LED_COUNT-1)/2+1); i <= (LED_COUNT-1); i++) {
