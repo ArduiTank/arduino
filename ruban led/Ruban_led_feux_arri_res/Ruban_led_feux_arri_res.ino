@@ -15,7 +15,8 @@ int orange_blue = 0;
 int iteration = 0;
 int reset = 1;
 
-int time_now = 0;
+int now_time = 0;
+int previous_time = 0;
 
 Adafruit_NeoPixel strip (LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
 
@@ -34,13 +35,15 @@ void setup() {
 }
 
 void loop() {
+  now_time = millis()/200;
   if (reset == 0 and (digitalRead(3) == 0 or digitalRead(4) == 0 or digitalRead(5) == 0)) {
-    if (time_now = millis()/200) {
+    if (now_time != previous_time) {
+      previous_time = now_time;
       iteration += 1;
       if (iteration == 3) {
         iteration = 0;
       }
-      reset = 1;
+      Serial.println("PLOP");
     }
     /*Serial.println(time_now%((LED_COUNT)/2)-1);
     Serial.println(((LED_COUNT-1)/2)-iteration);
