@@ -12,7 +12,7 @@ int orange_red = 255;
 int orange_green = 50;
 int orange_blue = 0;
 
-int iteration = 0;
+int iteration = -1;
 int reset = 1;
 
 int now_time = 0;
@@ -35,7 +35,7 @@ void setup() {
 }
 
 void loop() {
-  now_time = millis()/200;
+  now_time = millis()/500;
   if (reset == 0 and (digitalRead(3) == 0 or digitalRead(4) == 0 or digitalRead(5) == 0)) {
     if (now_time != previous_time) {
       previous_time = now_time;
@@ -75,7 +75,7 @@ void loop() {
       strip.show();
     }
     delay(200);*/
-    strip.setPixelColor(((LED_COUNT-1)/2)-(iteration-1), orange_red, orange_green, orange_blue);
+    strip.setPixelColor(((LED_COUNT-1)/2)-iteration, orange_red, orange_green, orange_blue);
     strip.show();
     /*if (iteration >= ((LED_COUNT)/2)-1) {
       iteration = 0;
