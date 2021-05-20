@@ -41,7 +41,7 @@ void loop() {
       previous_time = now_time;
       iteration += 1;
       if (iteration >= (LED_COUNT/2)+1) {
-        iteration = -2;
+        iteration = -1;
         reset = 1;
       }
       Serial.println(iteration);
