@@ -2,6 +2,7 @@
 
 #define LED_PIN 2
 #define LED_COUNT 5 // Stip LED : 295
+int brightness = 100;
 
 // Default color
 int red = 5;
@@ -27,7 +28,7 @@ void setup() {
   // put your setup code here, to run once:
   strip.begin();
   strip.show();
-  strip.setBrightness(100);
+  strip.setBrightness(brightness);
 
   pinMode(3, INPUT); // Clignotant gauche
   pinMode(4, INPUT); // Clignotant droit
