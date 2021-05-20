@@ -46,9 +46,6 @@ void loop() {
       }
       Serial.println(iteration);
     }
-    /*Serial.println(time_now%((LED_COUNT)/2)-1);
-    Serial.println(((LED_COUNT-1)/2)-iteration);
-    iteration = time_now%((LED_COUNT)/2)-1;*/
   }
   // Couleur si tank bouge
   else if (digitalRead(6) == 0) {
@@ -68,18 +65,8 @@ void loop() {
   }
   if (iteration != -1) {
     if (digitalRead(3) == 0) {
-      /*for (int i = 0; i <= (LED_COUNT-1)/2; i++) {
-        strip.setPixelColor((LED_COUNT-1)/2-i, orange_red, orange_green, orange_blue);
-        delay(200);
-        strip.show();
-      }
-      delay(200);*/
       strip.setPixelColor(((LED_COUNT-1)/2)-iteration, orange_red, orange_green, orange_blue);
       strip.show();
-      /*if (iteration >= ((LED_COUNT)/2)-1) {
-        iteration = 0;
-        reset = 1;
-      }*/
     }
   }
   
