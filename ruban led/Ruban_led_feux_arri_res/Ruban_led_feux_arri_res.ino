@@ -52,7 +52,6 @@ void loop() {
   }
   // Couleur si tank bouge
   else if (digitalRead(6) == 0) {
-    iteration = 0;
     reset = 0;
     for (int i = 0; i <= (LED_COUNT-1); i++) {
       strip.setPixelColor(i, 255, 0, 0);
@@ -61,7 +60,6 @@ void loop() {
   }
   // Couleur par défaut
   else {
-    iteration = 0;
     reset = 0;
     for (int i = 0; i <= (LED_COUNT-1); i++) {
       strip.setPixelColor(i, red, green, blue);
