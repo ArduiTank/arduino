@@ -38,10 +38,13 @@ void loop() {
   now_time = millis()/500;
   if (reset == 0 and (digitalRead(3) == 0 or digitalRead(4) == 0 or digitalRead(5) == 0)) {
     if (now_time != previous_time) {
+      if (previous_time == 0) {
+        
+      }
       previous_time = now_time;
       iteration += 1;
       if (iteration >= (LED_COUNT/2)+1) {
-        iteration = 0;
+        iteration = -1;
         reset = 1;
       }
       Serial.println("PLOP");
@@ -68,20 +71,21 @@ void loop() {
     }
     strip.show();
   }
-  
-  if (digitalRead(3) == 0) {
-    /*for (int i = 0; i <= (LED_COUNT-1)/2; i++) {
-      strip.setPixelColor((LED_COUNT-1)/2-i, orange_red, orange_green, orange_blue);
-      delay(200);
+  if (iteration != -1) {
+    if (digitalRead(3) == 0) {
+      /*for (int i = 0; i <= (LED_COUNT-1)/2; i++) {
+        strip.setPixelColor((LED_COUNT-1)/2-i, orange_red, orange_green, orange_blue);
+        delay(200);
+        strip.show();
+      }
+      delay(200);*/
+      strip.setPixelColor(((LED_COUNT-1)/2)-iteration, orange_red, orange_green, orange_blue);
       strip.show();
+      /*if (iteration >= ((LED_COUNT)/2)-1) {
+        iteration = 0;
+        reset = 1;
+      }*/
     }
-    delay(200);*/
-    strip.setPixelColor(((LED_COUNT-1)/2)-iteration, orange_red, orange_green, orange_blue);
-    strip.show();
-    /*if (iteration >= ((LED_COUNT)/2)-1) {
-      iteration = 0;
-      reset = 1;
-    }*/
   }
   
   else if (digitalRead(4) == 0) {
