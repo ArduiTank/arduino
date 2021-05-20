@@ -38,16 +38,13 @@ void loop() {
   now_time = millis()/500;
   if (reset == 0 and (digitalRead(3) == 0 or digitalRead(4) == 0 or digitalRead(5) == 0)) {
     if (now_time != previous_time) {
-      if (previous_time == 0) {
-        
-      }
       previous_time = now_time;
       iteration += 1;
       if (iteration >= (LED_COUNT/2)+1) {
-        iteration = -1;
+        iteration = -2;
         reset = 1;
       }
-      Serial.println("PLOP");
+      Serial.println(iteration);
     }
     /*Serial.println(time_now%((LED_COUNT)/2)-1);
     Serial.println(((LED_COUNT-1)/2)-iteration);
