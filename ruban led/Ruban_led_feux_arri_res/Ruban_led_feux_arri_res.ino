@@ -1,7 +1,7 @@
 #include <Adafruit_NeoPixel.h>
 
 #define LED_PIN 2
-#define LED_COUNT 295
+#define LED_COUNT 5 // Ruban : 295
 
 // Default color
 int red = 5;
