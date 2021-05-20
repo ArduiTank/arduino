@@ -75,7 +75,7 @@ void loop() {
       strip.show();
     }
     delay(200);*/
-    strip.setPixelColor(((LED_COUNT-1)/2)-iteration, orange_red, orange_green, orange_blue);
+    strip.setPixelColor(((LED_COUNT-1)/2)-(iteration-1), orange_red, orange_green, orange_blue);
     strip.show();
     /*if (iteration >= ((LED_COUNT)/2)-1) {
       iteration = 0;
