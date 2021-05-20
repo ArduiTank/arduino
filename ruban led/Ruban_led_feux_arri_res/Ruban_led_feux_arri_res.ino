@@ -1,20 +1,23 @@
 #include <Adafruit_NeoPixel.h>
 
 #define LED_PIN 2
-#define LED_COUNT 5 // Ruban : 295
+#define LED_COUNT 5 // Stip LED : 295
 
 // Default color
 int red = 5;
 int green = 255;
 int blue = 150;
 
+// Warning color
 int orange_red = 255;
 int orange_green = 50;
 int orange_blue = 0;
 
+// Selection light & Reset color
 int iteration = -1;
 int reset = 1;
 
+// Time gestion
 int now_time = 0;
 int previous_time = 0;
 
