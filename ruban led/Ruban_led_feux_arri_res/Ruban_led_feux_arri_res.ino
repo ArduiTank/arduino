@@ -40,6 +40,7 @@ void loop() {
       if (iteration == 3) {
         iteration = 0;
       }
+      reset = 1;
     }
     /*Serial.println(time_now%((LED_COUNT)/2)-1);
     Serial.println(((LED_COUNT-1)/2)-iteration);
