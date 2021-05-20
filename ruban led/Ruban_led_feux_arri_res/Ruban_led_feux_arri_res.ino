@@ -40,7 +40,7 @@ void loop() {
     if (now_time != previous_time) {
       previous_time = now_time;
       iteration += 1;
-      if (iteration == 3) {
+      if (iteration >= 3) {
         iteration = 0;
       }
       Serial.println("PLOP");
