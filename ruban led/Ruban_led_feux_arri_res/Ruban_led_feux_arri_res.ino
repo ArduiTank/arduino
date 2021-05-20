@@ -34,11 +34,16 @@ void setup() {
 }
 
 void loop() {
-  time_now = millis()/200;
   if (reset == 0 and (digitalRead(3) == 0 or digitalRead(4) == 0 or digitalRead(5) == 0)) {
-    Serial.println(time_now%((LED_COUNT)/2)-1);
+    if (time_now = millis()/200) {
+      iteration += 1;
+      if (iteration == 2) {
+        iteration = 0;
+      }
+    }
+    /*Serial.println(time_now%((LED_COUNT)/2)-1);
     Serial.println(((LED_COUNT-1)/2)-iteration);
-    iteration = time_now%((LED_COUNT)/2)-1;
+    iteration = time_now%((LED_COUNT)/2)-1;*/
   }
   // Couleur si tank bouge
   else if (digitalRead(6) == 0) {
@@ -68,10 +73,10 @@ void loop() {
     delay(200);*/
     strip.setPixelColor(((LED_COUNT-1)/2)-iteration, orange_red, orange_green, orange_blue);
     strip.show();
-    if (iteration >= ((LED_COUNT)/2)-1) {
+    /*if (iteration >= ((LED_COUNT)/2)-1) {
       iteration = 0;
       reset = 1;
-    }
+    }*/
   }
   
   else if (digitalRead(4) == 0) {
