@@ -1,7 +1,8 @@
 #include <Adafruit_NeoPixel.h>
 
 #define LED_PIN 2
-#define LED_COUNT 5 // Stip LED : 295
+#define LED_COUNT_FRONT 5 // Stip LED : 295
+#define LED_COUNT 15 // Stip LED : 295
 int brightness = 100;
 
 // Default color
@@ -17,6 +18,8 @@ int orange_blue = 0;
 // Selection light & Reset color
 int iteration = -1;
 int reset = 1;
+
+int old_status = 1;
 
 // Time gestion
 int now_time = 0;
@@ -44,7 +47,7 @@ void loop() {
     if (now_time != previous_time) {
       previous_time = now_time;
       iteration += 1;
-      if (iteration >= (LED_COUNT/2)+1) {
+      if (iteration >= (LED_COUNT_FRONT/2)+1) {
         iteration = -1;
         reset = 1;
       }
@@ -54,7 +57,7 @@ void loop() {
   // Couleur si tank bouge
   else if (digitalRead(6) == 0) {
     reset = 0;
-    for (int i = 0; i <= (LED_COUNT-1); i++) {
+    for (int i = 0; i <= (LED_COUNT_FRONT-1); i++) {
       strip.setPixelColor(i, 255, 0, 0);
     }
     strip.show();
@@ -72,30 +75,30 @@ void loop() {
   // Chenillard lampes arrière
   if (iteration != -1) {
     if (digitalRead(3) == 0) {
-      strip.setPixelColor(((LED_COUNT-1)/2)-iteration, orange_red, orange_green, orange_blue);
+      strip.setPixelColor(((LED_COUNT_FRONT-1)/2)-iteration, orange_red, orange_green, orange_blue);
       strip.show();
     }
 
     else if (digitalRead(4) == 0) {
-      if (LED_COUNT%2 == 0) {
-        strip.setPixelColor(((LED_COUNT-1)/2+1)+iteration, orange_red, orange_green, orange_blue);
+      if (LED_COUNT_FRONT%2 == 0) {
+        strip.setPixelColor(((LED_COUNT_FRONT-1)/2+1)+iteration, orange_red, orange_green, orange_blue);
         strip.show();
       }
       else {
-        //strip.setPixelColor(((LED_COUNT-1)/2)+iteration, orange_red, orange_green, orange_blue);
-        strip.setPixelColor(((LED_COUNT-1)/2)+iteration, orange_red, orange_green, orange_blue);
+        //strip.setPixelColor(((LED_COUNT_FRONT-1)/2)+iteration, orange_red, orange_green, orange_blue);
+        strip.setPixelColor(((LED_COUNT_FRONT-1)/2)+iteration, orange_red, orange_green, orange_blue);
         strip.show();
       }
     }
 
     else if (digitalRead(5) == 0) {
-      strip.setPixelColor(((LED_COUNT-1)/2)-iteration, orange_red, orange_green, orange_blue);
-      if (LED_COUNT%2 == 0) {
-        strip.setPixelColor(((LED_COUNT-1)/2+1)+iteration, orange_red, orange_green, orange_blue);
+      strip.setPixelColor(((LED_COUNT_FRONT-1)/2)-iteration, orange_red, orange_green, orange_blue);
+      if (LED_COUNT_FRONT%2 == 0) {
+        strip.setPixelColor(((LED_COUNT_FRONT-1)/2+1)+iteration, orange_red, orange_green, orange_blue);
       }
       else {
-        //strip.setPixelColor(((LED_COUNT-1)/2)+iteration, orange_red, orange_green, orange_blue);
-        strip.setPixelColor(((LED_COUNT-1)/2)+iteration, orange_red, orange_green, orange_blue);
+        //strip.setPixelColor(((LED_COUNT_FRONT-1)/2)+iteration, orange_red, orange_green, orange_blue);
+        strip.setPixelColor(((LED_COUNT_FRONT-1)/2)+iteration, orange_red, orange_green, orange_blue);
       }
       strip.show();
     }
