@@ -64,7 +64,7 @@ void loop() {
     for (int i = 0; i <= (LED_COUNT_FRONT-1); i++) {
       strip.setPixelColor(i, 255, 0, 0);
     }
-    for (int i = LED_COUNT_BACK; i <= (LED_COUNT-1); i++) {
+    for (int i = LED_COUNT_SIDE; i <= (LED_COUNT_BACK-1); i++) {
       strip.setPixelColor(i, 255, 0, 0);
     }
     strip.show();
