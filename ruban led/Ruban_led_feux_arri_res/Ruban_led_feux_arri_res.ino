@@ -1,8 +1,12 @@
 #include <Adafruit_NeoPixel.h>
 
 #define LED_PIN 2
-#define LED_COUNT_FRONT 5 // Stip LED : 295
-#define LED_COUNT 15 // Stip LED : 295
+
+// Stip LED : 295
+#define LED_COUNT_FRONT 5 // Begin => End LED front
+#define LED_COUNT_SIDE 10 // Begin => End LED side
+#define LED_COUNT_BACK 15 // Bengin => End LED back
+#define LED_COUNT 20 // Begin => End LED other side (end strip)
 int brightness = 100;
 
 // Default color
@@ -60,6 +64,9 @@ void loop() {
     for (int i = 0; i <= (LED_COUNT_FRONT-1); i++) {
       strip.setPixelColor(i, 255, 0, 0);
     }
+    for (int i = LED_COUNT_BACK; i <= (LED_COUNT-1); i++) {
+      strip.setPixelColor(i, 255, 0, 0);
+    }
     strip.show();
   }
   // Couleur par défaut
@@ -70,7 +77,6 @@ void loop() {
     }
     strip.show();
   }
-
 
   // Chenillard lampes arrière
   if (iteration != -1) {
