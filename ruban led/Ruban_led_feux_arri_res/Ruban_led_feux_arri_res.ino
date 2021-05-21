@@ -82,6 +82,7 @@ void loop() {
   if (iteration != -1) {
     if (digitalRead(3) == 0) {
       strip.setPixelColor(((LED_COUNT_FRONT-1)/2)-iteration, orange_red, orange_green, orange_blue);
+      strip.setPixelColor((((LED_COUNT_BACK-LED_COUNT_SIDE)-1)/2)+LED_COUNT_SIDE-iteration, orange_red, orange_green, orange_blue);
       strip.show();
     }
 
