@@ -160,12 +160,23 @@ void loop()
     delay(1000);
     strip.setBrightness(150);
     strip.show();*/
-    
-    for (int i = 0; i < LED_COUNT; i++) {
-      strip.setPixelColor(i, red, green, blue);
-      delay(15);
+    now_time = millis()/500;
+    int i;
+    if (now_time != previous_time) {
+      previous_time = now_time;
+      i += 1;
+      if (i <= LED_COUNT) {
+        strip.setPixelColor(i, red, green, blue);
+      }
+      else {
+        flag_begin = 1;
+      }
     }
-    flag_begin = 1;
+    /*for (int i = 0; i <= LED_COUNT; i++) {
+      strip.setPixelColor(i, red, green, blue);
+      delay(100);
+    }
+    flag_begin = 1;*/
   }
   now_time = millis()/200;
   if (reset == 0 and (trigger_Clignotant_gauche == 1 or trigger_Clignotant_droite == 1 or trigger_feu_de_detresse == 1)) {
