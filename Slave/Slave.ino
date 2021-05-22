@@ -20,6 +20,7 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 #define LED_COUNT_SIDE 11 // Begin => End LED side
 #define LED_COUNT_BACK 16 // Bengin => End LED back
 #define LED_COUNT 22 // Begin => End LED other side (end strip)
+
 int brightness = 100;
 
 // Default color
