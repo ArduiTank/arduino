@@ -163,7 +163,7 @@ void loop()
     int red_fade = 0;
     int green_fade = 0;
     int blue_fade = 0;
-    for (int i = 0; i <= 255; i++) {
+    for (int i = 0; i < 255; i++) {
         if (i <= red) {
           red_fade = i;
         }
@@ -173,7 +173,11 @@ void loop()
         if (i <= blue) {
           blue_fade = i;
         }
-        strip.setPixelColor(i, red_fade, green_fade, blue_fade);
+        int j = i;
+        if (j <= LED_COUNT) {
+          strip.setPixelColor(j, red_fade, green_fade, blue_fade);
+        }
+        strip.setPixelColor(LED_COUNT, red_fade, green_fade, blue_fade);
         strip.show();
         delay(10);
     }
