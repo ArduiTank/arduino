@@ -118,7 +118,7 @@ void setup()
   //strip.setBrightness(150);
   //strip.show();
 
-  now_time = millis()/500;
+  /*now_time = millis()/500;
   if (now_time != previous_time) {
     previous_time = now_time;
     iter += 1;
@@ -128,41 +128,41 @@ void setup()
     else {
       flag_begin = 1;
     }
-  }
+  }*/
 }
 
 void loop()
 {
   //---------------------------------- ruban LED ---------------------------------//
-  if (flag_begin == 1) {
-    if (data.VRY_Droite_Moteur2 < 400){
-      trigger_Clignotant_gauche = 1;  
-    }
-    else {
-      trigger_Clignotant_gauche = 0;  
-    }
-    
-    if (data.VRY_Droite_Moteur2 > 600){
-      trigger_Clignotant_droite = 1;
-    }
-    else {
-      trigger_Clignotant_droite = 0;
-    }
-  
-    if (data.VRX_Droite_Moteur1 < 400){
-      trigger_marche_avant = 1;
-    }
-    else {
-      trigger_marche_avant = 0;
-    }
-  
-    if (((data.VRX_Droite_Moteur1 > 400) and (data.VRX_Droite_Moteur1 < 600)) and ((data.VRY_Droite_Moteur2 > 400) and (data.VRY_Droite_Moteur2 < 600))){
-      trigger_feu_de_detresse = 1;
-    }
-    else {
-      trigger_feu_de_detresse = 0;
-    } 
+  //if (flag_begin == 1) {
+  if (data.VRY_Droite_Moteur2 < 400){
+    trigger_Clignotant_gauche = 1;  
   }
+  else {
+    trigger_Clignotant_gauche = 0;  
+  }
+  
+  if (data.VRY_Droite_Moteur2 > 600){
+    trigger_Clignotant_droite = 1;
+  }
+  else {
+    trigger_Clignotant_droite = 0;
+  }
+
+  if (data.VRX_Droite_Moteur1 < 400){
+    trigger_marche_avant = 1;
+  }
+  else {
+    trigger_marche_avant = 0;
+  }
+
+  if (((data.VRX_Droite_Moteur1 > 400) and (data.VRX_Droite_Moteur1 < 600)) and ((data.VRY_Droite_Moteur2 > 400) and (data.VRY_Droite_Moteur2 < 600))){
+    trigger_feu_de_detresse = 1;
+  }
+  else {
+    trigger_feu_de_detresse = 0;
+  } 
+  //}
   /*else {
     /*for (int i = 0; i <= brightness; i++) {
         strip.setBrightness(i);
