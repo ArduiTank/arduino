@@ -150,6 +150,7 @@ void loop()
         delay(10);
     }*/
     strip.setBrightness(80);
+    delay(1000);
     strip.setBrightness(150);
     flag_begin = 1;
   }
