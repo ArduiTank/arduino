@@ -146,7 +146,7 @@ void loop()
   else {
     for (int i = 0; i <= brightness; i++) {
         strip.setBrightness(i);
-        delay((260-brightness)/10);
+        delay(int((260-brightness)/10));
     }
     flag_begin = 1;
   }
