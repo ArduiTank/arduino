@@ -43,6 +43,8 @@ int flag_begin = 0;
 int now_time = 0;
 int previous_time = 0;
 
+int i = 0;
+
 Adafruit_NeoPixel strip (LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 int trigger_Clignotant_gauche;
@@ -161,7 +163,6 @@ void loop()
     strip.setBrightness(150);
     strip.show();*/
     now_time = millis()/500;
-    int i;
     if (now_time != previous_time) {
       previous_time = now_time;
       i += 1;
