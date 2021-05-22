@@ -111,10 +111,10 @@ void setup()
   //strip.setBrightness(brightness);
 
   strip.setBrightness(10);
-  /*strip.show();
+  //strip.show();
   delay(1000);
   strip.setBrightness(150);
-  strip.show();*/
+  //strip.show();
 }
 
 void loop()
