@@ -13,7 +13,7 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 //---------------------------------- ruban LED ---------------------------------//
 
-#define LED_PIN 7
+#define LED_PIN 9
 
 // Stip LED : 295
 #define LED_COUNT_FRONT 5 // Begin => End LED front
