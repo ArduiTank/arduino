@@ -108,7 +108,7 @@ void setup()
 
   strip.begin();
   strip.show();
-
+  //strip.setBrightness(brightness);
 }
 
 void loop()
@@ -150,8 +150,10 @@ void loop()
         delay(10);
     }*/
     strip.setBrightness(80);
+    strip.show();
     delay(1000);
     strip.setBrightness(150);
+    strip.show();
     flag_begin = 1;
   }
   now_time = millis()/200;
