@@ -64,8 +64,8 @@ SoftwareSerial SerialLocal(3, A7); // RX, TX de l'arduino (je recois, j'envoie)
 SerialTransfer TransferLocal;
 
 struct STRUCT {
-  int VRX_Gauche_ServoMoteur1;
-  int VRY_Gauche_ServoMoteur2;
+  int VRX_Gauche_ServoMoteur1 = 0;
+  int VRY_Gauche_ServoMoteur2 = 0;
   int BP_Gauche_Tirer;
   int VRX_Droite_Moteur1;
   int VRY_Droite_Moteur2;
