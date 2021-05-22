@@ -27,10 +27,6 @@ int red = 5;
 int green = 255;
 int blue = 150;
 
-int red_fade = 0;
-int green_fade = 0;
-int blue_fade = 0;
-
 // Warning color
 int orange_red = 255;
 int orange_green = 50;
@@ -165,23 +161,8 @@ void loop()
     strip.setBrightness(150);
     strip.show();*/
     
-    for (int i = 0; i < 256; i++) {
-        if (i <= red) {
-          red_fade = i;
-        }
-        if (i <= green) {
-          green_fade = i;
-        }
-        if (i <= blue) {
-          blue_fade = i;
-        }
-        int j = i;
-        if (j <= LED_COUNT) {
-          strip.setPixelColor(j, red_fade, green_fade, blue_fade);
-        }
-        strip.setPixelColor(LED_COUNT, red_fade, green_fade, blue_fade);
-        strip.show();
-        delay(10);
+    for (int i = 0; i < LED_COUNT; i++) {
+      strip.setPixelColor(i, red, green, blue);
     }
     flag_begin = 1;
   }
@@ -213,7 +194,7 @@ void loop()
   else {
     reset = 0;
     for (int i = 0; i <= (LED_COUNT-1); i++) {
-      strip.setPixelColor(i, red_fade, green_fade, blue_fade);
+      strip.setPixelColor(i, red, green, blue);
     }
     strip.show();
   }
