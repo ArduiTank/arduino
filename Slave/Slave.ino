@@ -64,8 +64,8 @@ SoftwareSerial SerialLocal(3, A7); // RX, TX de l'arduino (je recois, j'envoie)
 SerialTransfer TransferLocal;
 
 struct STRUCT {
-  int VRX_Gauche_ServoMoteur1 = 0;
-  int VRY_Gauche_ServoMoteur2 = 0;
+  int VRX_Gauche_ServoMoteur1;
+  int VRY_Gauche_ServoMoteur2;
   int BP_Gauche_Tirer;
   int VRX_Droite_Moteur1;
   int VRY_Droite_Moteur2;
@@ -287,7 +287,7 @@ void loop()
   xValue = data.VRY_Gauche_ServoMoteur2; 
 
 
-  if (xValue > 400 and xValue < 800) {
+  if (xValue > 400 and xValue < 600) {
     tourelle_x = 0;
   }
   else if (xValue > 800) {
@@ -301,7 +301,7 @@ void loop()
     digitalWrite(D0_motor_1, LOW);
     digitalWrite(D0_motor_2,HIGH);
     
-    tourelle_x = map(xValue,800,1023,0,255);
+    tourelle_x = map(xValue,600,1023,0,255);
   }
   analogWrite(PWM_ENABLE,tourelle_x * vitesse_rotation_tourelle);
 
