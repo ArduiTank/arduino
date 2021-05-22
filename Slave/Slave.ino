@@ -163,6 +163,7 @@ void loop()
     
     for (int i = 0; i < LED_COUNT; i++) {
       strip.setPixelColor(i, red, green, blue);
+      delay(15);
     }
     flag_begin = 1;
   }
