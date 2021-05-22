@@ -11,7 +11,7 @@ const int delay_ms = 20; //CHOISIR le temps du delay en ms
 const int rs = A2, en = A3, d4 = A4, d5 = A5, d6 = A0, d7 = A1;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
-//---------------------------------- ruban LED ---------------------------------
+//---------------------------------- ruban LED ---------------------------------//
 
 #define LED_PIN 7
 
@@ -37,6 +37,7 @@ int iteration = -1;
 int reset = 1;
 
 int old_status = 1;
+int flag_begin = 0;
 
 // Time gestion
 int now_time = 0;
@@ -49,10 +50,10 @@ int trigger_Clignotant_droite;
 int trigger_feu_de_detresse;
 int trigger_marche_avant;
 
-//-------------------------------- END ruban LED -------------------------------
+//-------------------------------- END ruban LED -------------------------------//
 
 
-//---------------------------------- Bluetooth ----------------------------------
+//---------------------------------- Bluetooth ----------------------------------//
 
 SoftwareSerial SerialLocal(3, A7); // RX, TX de l'arduino (je recois, j'envoie)
 //pin 3 recoit des infos
@@ -61,8 +62,8 @@ SoftwareSerial SerialLocal(3, A7); // RX, TX de l'arduino (je recois, j'envoie)
 SerialTransfer TransferLocal;
 
 struct STRUCT {
-  int VRX_Gauche_ServoMoteur1;
-  int VRY_Gauche_ServoMoteur2;
+  int VRX_Gauche_ServoMoteur1 = 0;
+  int VRY_Gauche_ServoMoteur2 = 0;
   int BP_Gauche_Tirer;
   int VRX_Droite_Moteur1;
   int VRY_Droite_Moteur2;
@@ -70,10 +71,10 @@ struct STRUCT {
   int Ultra_Distance;
 } data;
 
-//-------------------------------- END Bluetooth --------------------------------
+//-------------------------------- END Bluetooth --------------------------------//
 
 
-//----------------------------------- Motors -----------------------------------
+//----------------------------------- Motors -----------------------------------//
 
 Servo servo;
 float tourelle_y = 90;   //hauteur initiale du canon
@@ -88,7 +89,7 @@ int tourelle_x;                             //variable vitesse de rotation toure
 int xValue; //valeur lue du potentiometre x
 const float vitesse_rotation_tourelle = 0.8;//CHOISIR un taux de vitesse entre 0 et 1
 
-//--------------------------------- END Motors ---------------------------------
+//--------------------------------- END Motors ---------------------------------//
 
 void setup()
 {
@@ -107,41 +108,48 @@ void setup()
 
   strip.begin();
   strip.show();
-  strip.setBrightness(brightness);
 
 }
 
 void loop()
 {
-  //---------------------------------- ruban LED ---------------------------------
-  if (data.VRY_Droite_Moteur2 > 600){
-    trigger_Clignotant_gauche = 1;  
-  }
-  else {
-    trigger_Clignotant_gauche = 0;  
-  }
+  //---------------------------------- ruban LED ---------------------------------//
+  if (flag_begin == 1) {
+    if (data.VRY_Droite_Moteur2 < 400){
+      trigger_Clignotant_gauche = 1;  
+    }
+    else {
+      trigger_Clignotant_gauche = 0;  
+    }
+    
+    if (data.VRY_Droite_Moteur2 > 600){
+      trigger_Clignotant_droite = 1;
+    }
+    else {
+      trigger_Clignotant_droite = 0;
+    }
   
-  if (data.VRY_Droite_Moteur2 < 400){
-    trigger_Clignotant_droite = 1;
-  }
-  else {
-    trigger_Clignotant_droite = 0;
-  }
-
-  if (data.VRX_Droite_Moteur1 < 400){
-    trigger_marche_avant = 1;
-  }
-  else {
-    trigger_marche_avant = 0;
-  }
-
-  if (((data.VRX_Droite_Moteur1 > 400) and (data.VRX_Droite_Moteur1 < 600)) and ((data.VRY_Droite_Moteur2 > 400) and (data.VRY_Droite_Moteur2 < 600))){
-    trigger_feu_de_detresse = 1;
-  }
-  else {
-    trigger_feu_de_detresse = 0;
-  }
+    if (data.VRX_Droite_Moteur1 < 400){
+      trigger_marche_avant = 1;
+    }
+    else {
+      trigger_marche_avant = 0;
+    }
   
+    if (((data.VRX_Droite_Moteur1 > 400) and (data.VRX_Droite_Moteur1 < 600)) and ((data.VRY_Droite_Moteur2 > 400) and (data.VRY_Droite_Moteur2 < 600))){
+      trigger_feu_de_detresse = 1;
+    }
+    else {
+      trigger_feu_de_detresse = 0;
+    } 
+  }
+  else {
+    for (int i = 0; i <= brightness; i++) {
+        strip.setBrightness(i);
+        delay((260-brightness)/10);
+    }
+    flag_begin = 1;
+  }
   now_time = millis()/200;
   if (reset == 0 and (trigger_Clignotant_gauche == 1 or trigger_Clignotant_droite == 1 or trigger_feu_de_detresse == 1)) {
     if (now_time != previous_time) {
@@ -215,7 +223,7 @@ void loop()
   }
   
   
-  //-------------------------------- END ruban LED -------------------------------
+  //-------------------------------- END ruban LED -------------------------------//
   
   
   //----------------------------------- Motors -----------------------------------//
@@ -276,7 +284,7 @@ void loop()
   lcd.setCursor(10,0);
   lcd.print(String(tourelle_x)+"   ");
   
-  //--------------------------------- END Motors ---------------------------------
+  //--------------------------------- END Motors ---------------------------------//
 
   delay(delay_ms);
 }
