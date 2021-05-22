@@ -13,7 +13,7 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 //---------------------------------- ruban LED ---------------------------------//
 
-#define LED_PIN 9
+#define LED_PIN 7
 
 // Stip LED : 295
 #define LED_COUNT_FRONT 5 // Begin => End LED front
@@ -26,6 +26,10 @@ int brightness = 100;
 int red = 5;
 int green = 255;
 int blue = 150;
+
+int red_fade = 0;
+int green_fade = 0;
+int blue_fade = 0;
 
 // Warning color
 int orange_red = 255;
@@ -160,10 +164,8 @@ void loop()
     delay(1000);
     strip.setBrightness(150);
     strip.show();*/
-    int red_fade = 0;
-    int green_fade = 0;
-    int blue_fade = 0;
-    for (int i = 0; i < 255; i++) {
+    
+    for (int i = 0; i < 256; i++) {
         if (i <= red) {
           red_fade = i;
         }
@@ -211,7 +213,7 @@ void loop()
   else {
     reset = 0;
     for (int i = 0; i <= (LED_COUNT-1); i++) {
-      strip.setPixelColor(i, red, green, blue);
+      strip.setPixelColor(i, red_fade, green_fade, blue_fade);
     }
     strip.show();
   }
