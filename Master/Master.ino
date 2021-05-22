@@ -182,6 +182,6 @@ void loop()
 //  Serial.print(" VRY_2 : ");
 //  Serial.println(data.VRY_Droite_Moteur2);
 
-  delay(50);
+  delay(20);
   
 }
