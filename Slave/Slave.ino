@@ -2,6 +2,7 @@
 #include "SerialTransfer.h"
 #include <LiquidCrystal.h>
 #include <Servo.h>
+#include <Adafruit_NeoPixel.h>
 //sound
 
 
@@ -9,6 +10,49 @@ const int delay_ms = 20; //CHOISIR le temps du delay en ms
 
 const int rs = A2, en = A3, d4 = A4, d5 = A5, d6 = A0, d7 = A1;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
+//---------------------------------- ruban LED ---------------------------------
+
+#define LED_PIN 7
+
+// Stip LED : 295
+#define LED_COUNT_FRONT 5 // Begin => End LED front
+#define LED_COUNT_SIDE 11 // Begin => End LED side
+#define LED_COUNT_BACK 16 // Bengin => End LED back
+#define LED_COUNT 22 // Begin => End LED other side (end strip)
+int brightness = 100;
+
+// Default color
+int red = 5;
+int green = 255;
+int blue = 150;
+
+// Warning color
+int orange_red = 255;
+int orange_green = 50;
+int orange_blue = 0;
+
+// Selection light & Reset color
+int iteration = -1;
+int reset = 1;
+
+int old_status = 1;
+
+// Time gestion
+int now_time = 0;
+int previous_time = 0;
+
+Adafruit_NeoPixel strip (LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
+
+int trigger_Clignotant_gauche;
+int trigger_Clignotant_droite;
+int trigger_feu_de_detresse;
+int trigger_marche_avant;
+
+//-------------------------------- END ruban LED -------------------------------
+
+
+//---------------------------------- Bluetooth ----------------------------------
 
 SoftwareSerial SerialLocal(3, A7); // RX, TX de l'arduino (je recois, j'envoie)
 //pin 3 recoit des infos
@@ -26,6 +70,11 @@ struct STRUCT {
   int Ultra_Distance;
 } data;
 
+//-------------------------------- END Bluetooth --------------------------------
+
+
+//----------------------------------- Motors -----------------------------------
+
 Servo servo;
 float tourelle_y = 90;   //hauteur initiale du canon
 int yValue; //valeur lue du potentiometre y
@@ -39,9 +88,11 @@ int tourelle_x;                             //variable vitesse de rotation toure
 int xValue; //valeur lue du potentiometre x
 const float vitesse_rotation_tourelle = 0.8;//CHOISIR un taux de vitesse entre 0 et 1
 
+//--------------------------------- END Motors ---------------------------------
 
 void setup()
 {
+
   servo.attach(5);
   
   lcd.begin(16, 2); 
@@ -49,19 +100,127 @@ void setup()
   Serial.begin(38400);
   SerialLocal.begin(38400);
   TransferLocal.begin(SerialLocal);
-
+  
   pinMode(PWM_ENABLE,OUTPUT);
   pinMode(D0_motor_1,OUTPUT);
   pinMode(D0_motor_2,OUTPUT);
 
+  strip.begin();
+  strip.show();
+  strip.setBrightness(brightness);
 
 }
 
 void loop()
 {
-  yValue = map(data.VRY_Gauche_ServoMoteur2, 0, 1023, -100, 100); 
+  //---------------------------------- ruban LED ---------------------------------
+  if (data.VRX_Droite_Moteur1 > 600){
+    trigger_Clignotant_gauche = 1;  
+  }
+  else {
+    trigger_Clignotant_gauche = 0;  
+  }
+  
+  if (data.VRX_Droite_Moteur1 < 400){
+    trigger_Clignotant_droite = 1;
+  }
+  else {
+    trigger_Clignotant_droite = 0;
+  }
 
- 
+  if (data.VRY_Droite_Moteur2 < 400){
+    trigger_marche_avant = 1;
+  }
+  else {
+    trigger_marche_avant = 0;
+  }
+
+  if (((data.VRX_Droite_Moteur1 > 400) and (data.VRX_Droite_Moteur1 < 600)) and ((data.VRY_Droite_Moteur2 > 400) and (data.VRY_Droite_Moteur2 < 600))){
+    trigger_feu_de_detresse = 1;
+  }
+  else {
+    trigger_feu_de_detresse = 0;
+  }
+  
+  now_time = millis()/200;
+  if (reset == 0 and (trigger_Clignotant_gauche == 1 or trigger_Clignotant_droite == 1 or trigger_feu_de_detresse == 1)) {
+    if (now_time != previous_time) {
+      previous_time = now_time;
+      iteration += 1;
+      if (iteration >= (LED_COUNT_FRONT/2)+1) {
+        iteration = -1;
+        reset = 1;
+      }
+      //Serial.println(iteration);
+    }
+  }
+
+  // Couleur si tank bouge
+  else if (trigger_marche_avant == 1) {
+    reset = 0;
+    for (int i = 0; i <= (LED_COUNT_FRONT-1); i++) {
+      strip.setPixelColor(i, 255, 255, 255);
+    }
+    for (int i = LED_COUNT_SIDE; i <= (LED_COUNT_BACK-1); i++) {
+      strip.setPixelColor(i, 255, 0, 0);
+    }
+    strip.show();
+  }
+  // Couleur par défaut
+  else {
+    reset = 0;
+    for (int i = 0; i <= (LED_COUNT-1); i++) {
+      strip.setPixelColor(i, red, green, blue);
+    }
+    strip.show();
+  }
+
+  // Chenillard lampes arrière
+  if (iteration != -1) {
+    if (trigger_Clignotant_gauche == 1) {
+      strip.setPixelColor(((LED_COUNT_FRONT-1)/2)-iteration, orange_red, orange_green, orange_blue);
+      if (LED_COUNT_FRONT%2 == 0) {
+        strip.setPixelColor((((LED_COUNT_BACK-LED_COUNT_SIDE)-1)/2+1)+LED_COUNT_SIDE+iteration, orange_red, orange_green, orange_blue);
+      }
+      else {
+        strip.setPixelColor((((LED_COUNT_BACK-LED_COUNT_SIDE)-1)/2)+LED_COUNT_SIDE+iteration, orange_red, orange_green, orange_blue);
+      }
+      strip.show();
+    }
+
+  else if (trigger_Clignotant_droite == 1) {
+      if (LED_COUNT_FRONT%2 == 0) {
+        strip.setPixelColor(((LED_COUNT_FRONT-1)/2+1)+iteration, orange_red, orange_green, orange_blue);
+      }
+      else {
+        strip.setPixelColor(((LED_COUNT_FRONT-1)/2)+iteration, orange_red, orange_green, orange_blue);
+      }
+      strip.setPixelColor((((LED_COUNT_BACK-LED_COUNT_SIDE)-1)/2)+LED_COUNT_SIDE-iteration, orange_red, orange_green, orange_blue);
+      strip.show();
+    }
+    
+  else if (trigger_feu_de_detresse == 1) {
+      strip.setPixelColor(((LED_COUNT_FRONT-1)/2)-iteration, orange_red, orange_green, orange_blue);
+      strip.setPixelColor((((LED_COUNT_BACK-LED_COUNT_SIDE)-1)/2)+LED_COUNT_SIDE-iteration, orange_red, orange_green, orange_blue);
+      if (LED_COUNT_FRONT%2 == 0) {
+        strip.setPixelColor(((LED_COUNT_FRONT-1)/2+1)+iteration, orange_red, orange_green, orange_blue);
+        strip.setPixelColor((((LED_COUNT_BACK-LED_COUNT_SIDE)-1)/2+1)+LED_COUNT_SIDE+iteration, orange_red, orange_green, orange_blue);
+      }
+      else {
+        strip.setPixelColor(((LED_COUNT_FRONT-1)/2)+iteration, orange_red, orange_green, orange_blue);
+        strip.setPixelColor((((LED_COUNT_BACK-LED_COUNT_SIDE)-1)/2)+LED_COUNT_SIDE+iteration, orange_red, orange_green, orange_blue);
+      }
+      strip.show();
+    }
+  }
+  
+  
+  //-------------------------------- END ruban LED -------------------------------
+  
+  
+  //----------------------------------- Motors -----------------------------------
+  
+  yValue = map(data.VRX_Gauche_ServoMoteur1, 0, 1023, -100, 100); 
   
   //configuration de la deadband du joystick 2 en Y
   if (yValue > -25 and yValue < 25) {
@@ -86,7 +245,7 @@ void loop()
   }
 
 
-  xValue = data.VRX_Gauche_ServoMoteur1; 
+  xValue = data.VRY_Gauche_ServoMoteur2; 
 
 
   if (xValue > 400 and xValue < 800) {
@@ -114,6 +273,8 @@ void loop()
   lcd.print(String(tourelle_y)+"   ");
   lcd.setCursor(10,0);
   lcd.print(String(tourelle_x)+"   ");
+  
+  //--------------------------------- END Motors ---------------------------------
 
   delay(delay_ms);
 }
