@@ -108,12 +108,12 @@ void setup()
 
   strip.begin();
   strip.show();
-  //strip.setBrightness(brightness);
+  strip.setBrightness(brightness);
 
-  strip.setBrightness(10);
+  //strip.setBrightness(10);
   //strip.show();
-  delay(1000);
-  strip.setBrightness(150);
+  //delay(1000);
+  //strip.setBrightness(150);
   //strip.show();
 }
 
@@ -160,6 +160,23 @@ void loop()
     delay(1000);
     strip.setBrightness(150);
     strip.show();*/
+    int red_fade = 0;
+    int green_fade = 0;
+    int blue_fade = 0;
+    for (int i = 0; i <= 255; i++) {
+        if (i <= red) {
+          red_fade = i;
+        }
+        if (i <= green) {
+          green_fade = i;
+        }
+        if (i <= blue) {
+          blue_fade = i;
+        }
+        strip.setPixelColor(i, red_fade, green_fade, blue_fade);
+        strip.show();
+        delay(10);
+    }
     flag_begin = 1;
   }
   now_time = millis()/200;
