@@ -136,14 +136,14 @@ void loop()
 {
   //---------------------------------- ruban LED ---------------------------------//
   //if (flag_begin == 1) {
-  if (data.VRY_Droite_Moteur2 < 400){
+  if (data.VRY_Droite_Moteur2 > 600){
     trigger_Clignotant_gauche = 1;  
   }
   else {
     trigger_Clignotant_gauche = 0;  
   }
   
-  if (data.VRY_Droite_Moteur2 > 600){
+  if (data.VRY_Droite_Moteur2 < 400){
     trigger_Clignotant_droite = 1;
   }
   else {
