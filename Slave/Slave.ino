@@ -114,21 +114,21 @@ void setup()
 void loop()
 {
   //---------------------------------- ruban LED ---------------------------------
-  if (data.VRX_Droite_Moteur1 > 600){
+  if (data.VRY_Droite_Moteur2 > 600){
     trigger_Clignotant_gauche = 1;  
   }
   else {
     trigger_Clignotant_gauche = 0;  
   }
   
-  if (data.VRX_Droite_Moteur1 < 400){
+  if (data.VRY_Droite_Moteur2 < 400){
     trigger_Clignotant_droite = 1;
   }
   else {
     trigger_Clignotant_droite = 0;
   }
 
-  if (data.VRY_Droite_Moteur2 < 400){
+  if (data.VRX_Droite_Moteur1 < 400){
     trigger_marche_avant = 1;
   }
   else {
@@ -218,7 +218,7 @@ void loop()
   //-------------------------------- END ruban LED -------------------------------
   
   
-  //----------------------------------- Motors -----------------------------------
+  //----------------------------------- Motors -----------------------------------//
   
   yValue = map(data.VRX_Gauche_ServoMoteur1, 0, 1023, -100, 100); 
   
@@ -251,15 +251,17 @@ void loop()
   if (xValue > 400 and xValue < 800) {
     tourelle_x = 0;
   }
-  else if (xValue < 400) {
-    digitalWrite(D0_motor_1, HIGH);
+  else if (xValue > 800) {
     digitalWrite(D0_motor_2, LOW);
+    digitalWrite(D0_motor_1, HIGH);
+    
     tourelle_x = map(xValue,0,400,255,0);
   }
 
-  else if (xValue > 800) {
+  else if (xValue < 400) {
     digitalWrite(D0_motor_1, LOW);
     digitalWrite(D0_motor_2,HIGH);
+    
     tourelle_x = map(xValue,800,1023,0,255);
   }
   analogWrite(PWM_ENABLE,tourelle_x * vitesse_rotation_tourelle);
