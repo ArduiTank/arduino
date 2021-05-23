@@ -14,10 +14,6 @@ int red = 5;
 int green = 255;
 int blue = 150;
 
-int brightness_red = 0;
-int brightness_green = 0;
-int brightness_blue = 0;
-
 // Warning color
 int orange_red = 255;
 int orange_green = 50;
@@ -61,7 +57,6 @@ void loop() {
         strip.show();
       }
     }
-    //if (brightness_red == red and brightness_green == green and brightness_blue == blue) {
     if (iteration == 255) {
       iteration = -1;
       flag_begin = 0;
