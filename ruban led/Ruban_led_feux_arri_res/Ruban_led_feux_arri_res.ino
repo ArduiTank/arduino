@@ -64,8 +64,9 @@ void loop() {
       }
       for (int j = 0; j <= LED_COUNT; j++) {
         strip.setPixelColor(j, brightness_red, brightness_green, brightness_blue);
+        strip.show();
       }
-      delay(10);
+      delay(5);
     }
     flag_begin = 0;
   }
