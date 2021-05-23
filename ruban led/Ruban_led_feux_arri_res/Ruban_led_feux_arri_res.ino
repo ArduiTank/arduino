@@ -71,7 +71,7 @@ void loop() {
       Serial.println(iteration);
       Serial.println(blue);
       Serial.println(blue/255);
-      Serial.println((blue / 255) * iteration);
+      Serial.println((float(blue) / float(255)) * iteration);
       Serial.println(brightness_blue);
       for (int j = 0; j <= LED_COUNT; j++) {
         strip.setPixelColor(j, brightness_red, brightness_green, brightness_blue);
