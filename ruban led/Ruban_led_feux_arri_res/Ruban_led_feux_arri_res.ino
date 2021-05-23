@@ -52,23 +52,28 @@ void setup() {
 
 void loop() {
   if (flag_begin == 1) {
-    for (int i = 0; i <= 255; i++) {
-      if (i <= red) {
-        brightness_red = i;
+    now_time = millis()/5;
+    if (now_time != previous_time) {
+      previous_time = now_time;
+      iteration += 1;
+      if (iteration <= red) {
+        brightness_red = iteration;
       }
-      if (i <= green) {
-        brightness_green = i;
+      if (iteration <= green) {
+        brightness_green = iteration;
       }
-      if (i <= blue) {
-        brightness_blue = i;
+      if (iteration <= blue) {
+        brightness_blue = iteration;
       }
       for (int j = 0; j <= LED_COUNT; j++) {
         strip.setPixelColor(j, brightness_red, brightness_green, brightness_blue);
         strip.show();
       }
-      delay(5);
     }
-    flag_begin = 0;
+    if (brightness_red == red and brightness_green == green and brightness_blue == blue) {
+      iteration = -1;
+      flag_begin = 0;
+    }
   }
   else {
     now_time = millis()/200;
