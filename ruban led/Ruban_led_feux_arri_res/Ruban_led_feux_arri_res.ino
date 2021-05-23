@@ -41,7 +41,7 @@ void setup() {
   strip.begin();
   strip.show();
   strip.setBrightness(brightness);
-  
+
   pinMode(3, INPUT); // Clignotant gauche
   pinMode(4, INPUT); // Clignotant droit
   pinMode(5, INPUT); // Feu de détresse
@@ -52,22 +52,27 @@ void setup() {
 
 void loop() {
   if (flag_begin == 1) {
-    now_time = millis()/5;
+    now_time = millis() / 5;
     if (now_time != previous_time) {
       previous_time = now_time;
       iteration += 1;
       /*if (iteration <= red) {
         brightness_red = iteration;
-      }
-      if (iteration <= green) {
+        }
+        if (iteration <= green) {
         brightness_green = iteration;
-      }
-      if (iteration <= blue) {
+        }
+        if (iteration <= blue) {
         brightness_blue = iteration;
-      }*/
-      brightness_red = round((red/255)*iteration);
-      brightness_green = round((green/255)*iteration);
-      brightness_blue = round((blue/255)*iteration);
+        }*/
+      brightness_red = round((red / 255) * iteration);
+      brightness_green = round((green / 255) * iteration);
+      brightness_blue = round((blue / 255) * iteration);
+      Serial.println(iteration);
+      Serial.println(blue);
+      Serial.println(blue/255);
+      Serial.println((blue / 255) * iteration);
+      Serial.println(brightness_blue);
       for (int j = 0; j <= LED_COUNT; j++) {
         strip.setPixelColor(j, brightness_red, brightness_green, brightness_blue);
         strip.show();
@@ -80,12 +85,12 @@ void loop() {
     }
   }
   else {
-    now_time = millis()/200;
+    now_time = millis() / 200;
     if (reset == 0 and (digitalRead(3) == 0 or digitalRead(4) == 0 or digitalRead(5) == 0)) {
       if (now_time != previous_time) {
         previous_time = now_time;
         iteration += 1;
-        if (iteration >= (LED_COUNT_FRONT/2)+1) {
+        if (iteration >= (LED_COUNT_FRONT / 2) + 1) {
           iteration = -1;
           reset = 1;
         }
@@ -95,10 +100,10 @@ void loop() {
     // Couleur si tank bouge
     else if (digitalRead(6) == 0) {
       reset = 0;
-      for (int i = 0; i <= (LED_COUNT_FRONT-1); i++) {
+      for (int i = 0; i <= (LED_COUNT_FRONT - 1); i++) {
         strip.setPixelColor(i, 255, 255, 255);
       }
-      for (int i = LED_COUNT_SIDE; i <= (LED_COUNT_BACK-1); i++) {
+      for (int i = LED_COUNT_SIDE; i <= (LED_COUNT_BACK - 1); i++) {
         strip.setPixelColor(i, 255, 0, 0);
       }
       strip.show();
@@ -106,46 +111,46 @@ void loop() {
     // Couleur par défaut
     else {
       reset = 0;
-      for (int i = 0; i <= (LED_COUNT-1); i++) {
+      for (int i = 0; i <= (LED_COUNT - 1); i++) {
         strip.setPixelColor(i, red, green, blue);
       }
       strip.show();
     }
-  
+
     // Chenillard lampes arrière
     if (iteration != -1) {
       if (digitalRead(3) == 0) {
-        strip.setPixelColor(((LED_COUNT_FRONT-1)/2)-iteration, orange_red, orange_green, orange_blue);
-        if (LED_COUNT_FRONT%2 == 0) {
-          strip.setPixelColor((((LED_COUNT_BACK-LED_COUNT_SIDE)-1)/2+1)+LED_COUNT_SIDE+iteration, orange_red, orange_green, orange_blue);
+        strip.setPixelColor(((LED_COUNT_FRONT - 1) / 2) - iteration, orange_red, orange_green, orange_blue);
+        if (LED_COUNT_FRONT % 2 == 0) {
+          strip.setPixelColor((((LED_COUNT_BACK - LED_COUNT_SIDE) - 1) / 2 + 1) + LED_COUNT_SIDE + iteration, orange_red, orange_green, orange_blue);
         }
         else {
-          strip.setPixelColor((((LED_COUNT_BACK-LED_COUNT_SIDE)-1)/2)+LED_COUNT_SIDE+iteration, orange_red, orange_green, orange_blue);
+          strip.setPixelColor((((LED_COUNT_BACK - LED_COUNT_SIDE) - 1) / 2) + LED_COUNT_SIDE + iteration, orange_red, orange_green, orange_blue);
         }
         strip.show();
       }
-  
+
       else if (digitalRead(4) == 0) {
-        if (LED_COUNT_FRONT%2 == 0) {
-          strip.setPixelColor(((LED_COUNT_FRONT-1)/2+1)+iteration, orange_red, orange_green, orange_blue);
+        if (LED_COUNT_FRONT % 2 == 0) {
+          strip.setPixelColor(((LED_COUNT_FRONT - 1) / 2 + 1) + iteration, orange_red, orange_green, orange_blue);
         }
         else {
-          strip.setPixelColor(((LED_COUNT_FRONT-1)/2)+iteration, orange_red, orange_green, orange_blue);
+          strip.setPixelColor(((LED_COUNT_FRONT - 1) / 2) + iteration, orange_red, orange_green, orange_blue);
         }
-        strip.setPixelColor((((LED_COUNT_BACK-LED_COUNT_SIDE)-1)/2)+LED_COUNT_SIDE-iteration, orange_red, orange_green, orange_blue);
+        strip.setPixelColor((((LED_COUNT_BACK - LED_COUNT_SIDE) - 1) / 2) + LED_COUNT_SIDE - iteration, orange_red, orange_green, orange_blue);
         strip.show();
       }
-  
+
       else if (digitalRead(5) == 0) {
-        strip.setPixelColor(((LED_COUNT_FRONT-1)/2)-iteration, orange_red, orange_green, orange_blue);
-        strip.setPixelColor((((LED_COUNT_BACK-LED_COUNT_SIDE)-1)/2)+LED_COUNT_SIDE-iteration, orange_red, orange_green, orange_blue);
-        if (LED_COUNT_FRONT%2 == 0) {
-          strip.setPixelColor(((LED_COUNT_FRONT-1)/2+1)+iteration, orange_red, orange_green, orange_blue);
-          strip.setPixelColor((((LED_COUNT_BACK-LED_COUNT_SIDE)-1)/2+1)+LED_COUNT_SIDE+iteration, orange_red, orange_green, orange_blue);
+        strip.setPixelColor(((LED_COUNT_FRONT - 1) / 2) - iteration, orange_red, orange_green, orange_blue);
+        strip.setPixelColor((((LED_COUNT_BACK - LED_COUNT_SIDE) - 1) / 2) + LED_COUNT_SIDE - iteration, orange_red, orange_green, orange_blue);
+        if (LED_COUNT_FRONT % 2 == 0) {
+          strip.setPixelColor(((LED_COUNT_FRONT - 1) / 2 + 1) + iteration, orange_red, orange_green, orange_blue);
+          strip.setPixelColor((((LED_COUNT_BACK - LED_COUNT_SIDE) - 1) / 2 + 1) + LED_COUNT_SIDE + iteration, orange_red, orange_green, orange_blue);
         }
         else {
-          strip.setPixelColor(((LED_COUNT_FRONT-1)/2)+iteration, orange_red, orange_green, orange_blue);
-          strip.setPixelColor((((LED_COUNT_BACK-LED_COUNT_SIDE)-1)/2)+LED_COUNT_SIDE+iteration, orange_red, orange_green, orange_blue);
+          strip.setPixelColor(((LED_COUNT_FRONT - 1) / 2) + iteration, orange_red, orange_green, orange_blue);
+          strip.setPixelColor((((LED_COUNT_BACK - LED_COUNT_SIDE) - 1) / 2) + LED_COUNT_SIDE + iteration, orange_red, orange_green, orange_blue);
         }
         strip.show();
       }
