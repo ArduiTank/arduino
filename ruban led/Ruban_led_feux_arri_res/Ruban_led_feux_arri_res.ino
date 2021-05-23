@@ -56,25 +56,8 @@ void loop() {
     if (now_time != previous_time) {
       previous_time = now_time;
       iteration += 1;
-      /*if (iteration <= red) {
-        brightness_red = iteration;
-        }
-        if (iteration <= green) {
-        brightness_green = iteration;
-        }
-        if (iteration <= blue) {
-        brightness_blue = iteration;
-        }*/
-      brightness_red = round((red / 255) * iteration);
-      brightness_green = round((green / 255) * iteration);
-      brightness_blue = round((blue / 255) * iteration);
-      Serial.println(iteration);
-      Serial.println(blue);
-      Serial.println(blue/255);
-      Serial.println((float(blue) / float(255)) * iteration);
-      Serial.println(brightness_blue);
       for (int j = 0; j <= LED_COUNT; j++) {
-        strip.setPixelColor(j, brightness_red, brightness_green, brightness_blue);
+        strip.setPixelColor(j, ((float(red) / float(255)) * iteration), ((float(green) / float(255)) * iteration), ((float(blue) / float(255)) * iteration));
         strip.show();
       }
     }
