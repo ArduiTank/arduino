@@ -65,9 +65,9 @@ void loop() {
       if (iteration <= blue) {
         brightness_blue = iteration;
       }*/
-      brightness_red = (red/255)*iteration;
-      brightness_green = (green/255)*iteration;
-      brightness_blue = (blue/255)*iteration;
+      brightness_red = round((red/255)*iteration);
+      brightness_green = round((green/255)*iteration);
+      brightness_blue = round((blue/255)*iteration);
       for (int j = 0; j <= LED_COUNT; j++) {
         strip.setPixelColor(j, brightness_red, brightness_green, brightness_blue);
         strip.show();
@@ -89,7 +89,7 @@ void loop() {
           iteration = -1;
           reset = 1;
         }
-        Serial.println(iteration);
+        //Serial.println(iteration);
       }
     }
     // Couleur si tank bouge
