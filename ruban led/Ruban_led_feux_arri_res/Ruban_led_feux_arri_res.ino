@@ -56,7 +56,7 @@ void loop() {
     if (now_time != previous_time) {
       previous_time = now_time;
       iteration += 1;
-      if (iteration <= red) {
+      /*if (iteration <= red) {
         brightness_red = iteration;
       }
       if (iteration <= green) {
@@ -64,13 +64,17 @@ void loop() {
       }
       if (iteration <= blue) {
         brightness_blue = iteration;
-      }
+      }*/
+      brightness_red = (red/255)*iteration;
+      brightness_green = (green/255)*iteration;
+      brightness_blue = (blue/255)*iteration;
       for (int j = 0; j <= LED_COUNT; j++) {
         strip.setPixelColor(j, brightness_red, brightness_green, brightness_blue);
         strip.show();
       }
     }
-    if (brightness_red == red and brightness_green == green and brightness_blue == blue) {
+    //if (brightness_red == red and brightness_green == green and brightness_blue == blue) {
+    if (iteration == 255) {
       iteration = -1;
       flag_begin = 0;
     }
