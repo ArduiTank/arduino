@@ -4,8 +4,8 @@
 
 // Stip LED : 295
 #define LED_COUNT_RIGHT 5 // Begin => End LED right side
-#define LED_COUNT_BACK 10 // Begin => End LED at the back
-#define LED_COUNT 15 // Begin => End LED left side (end strip)
+#define LED_COUNT_BACK 20 // Begin => End LED at the back
+#define LED_COUNT 25 // Begin => End LED left side (end strip)
 int brightness = 100;
 
 // Default color
