@@ -37,8 +37,8 @@ long distance;
 
 
 struct STRUCT {
-  int VRX_Gauche_ServoMoteur1;
-  int VRY_Gauche_ServoMoteur2;
+  int VRX_Gauche_ServoMoteur1 = 510;
+  int VRY_Gauche_ServoMoteur2 = 520;
   int BP_Gauche_Tirer;
   int VRX_Droite_Moteur1 = 510;
   int VRY_Droite_Moteur2 = 520;
@@ -121,17 +121,17 @@ void loop()
   }
   
   //envoi des données de sens de rotation et vitesse aux moteurs (avec une deadband autour de la position neutre)
-  if (vitesse_chenille1 > 50) {
+  if (vitesse_chenille2 > 50) {
     digitalWrite(pin_S2, LOW);
     digitalWrite(pin_S1, HIGH);
-    analogWrite(pin_ENA, abs(vitesse_chenille1));
+    analogWrite(pin_ENA, abs(vitesse_chenille2));
     
   }
   
-  else if (vitesse_chenille1 < -50) { 
+  else if (vitesse_chenille2 < -50) { 
     digitalWrite(pin_S1, LOW);
     digitalWrite(pin_S2, HIGH);
-    analogWrite(pin_ENA, abs(vitesse_chenille1));
+    analogWrite(pin_ENA, abs(vitesse_chenille2));
     
   }
   
@@ -141,16 +141,16 @@ void loop()
     digitalWrite(pin_ENA, LOW);
   }
   
-  if (vitesse_chenille2 > 50) {
+  if (vitesse_chenille1 > 50) {
     digitalWrite(pin_S4, LOW);
     digitalWrite(pin_S3, HIGH);
-    analogWrite(pin_ENB, abs(vitesse_chenille2));
+    analogWrite(pin_ENB, abs(vitesse_chenille1));
   }
   
-  else if (vitesse_chenille2 < -50) {
+  else if (vitesse_chenille1 < -50) {
     digitalWrite(pin_S3, LOW);
     digitalWrite(pin_S4, HIGH);
-    analogWrite(pin_ENB, abs(vitesse_chenille2));
+    analogWrite(pin_ENB, abs(vitesse_chenille1));
     
   }
   
@@ -182,6 +182,6 @@ void loop()
 //  Serial.print(" VRY_2 : ");
 //  Serial.println(data.VRY_Droite_Moteur2);
 
-  delay(20);
+  delay(5);
   
 }
