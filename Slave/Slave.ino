@@ -6,7 +6,7 @@
 //sound
 
 
-const int delay_ms = 20; //CHOISIR le temps du delay en ms
+const int delay_ms = 5; //CHOISIR le temps du delay en ms
 
 const int rs = A2, en = A3, d4 = A4, d5 = A5, d6 = A0, d7 = A1;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
@@ -65,8 +65,8 @@ SoftwareSerial SerialLocal(3, A7); // RX, TX de l'arduino (je recois, j'envoie)
 SerialTransfer TransferLocal;
 
 struct STRUCT {
-  int VRX_Gauche_ServoMoteur1;
-  int VRY_Gauche_ServoMoteur2;
+  int VRX_Gauche_ServoMoteur1 = 510;
+  int VRY_Gauche_ServoMoteur2 = 520;
   int BP_Gauche_Tirer;
   int VRX_Droite_Moteur1;
   int VRY_Droite_Moteur2;
