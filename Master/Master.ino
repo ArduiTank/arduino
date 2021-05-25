@@ -1,85 +1,82 @@
-#include <SoftwareSerial.h>
-#include "SerialTransfer.h"
-#include <MFRC522.h> // for the RFID
-#include <SPI.h> // for the RFID and SD card module
+#include <SoftwareSerial.h>             // for de bluetooth
+#include "SerialTransfer.h"             // for de bluetooth
+#include <MFRC522.h>                    // for the RFID
+#include <SPI.h>                        // for the RFID and SD card module
 
-SoftwareSerial SerialLocal(A0, 3); // RX, TX de l'arduino (je recois, j'envoie)
+SoftwareSerial SerialLocal(A0, 3);      // RX, TX de l'arduino (je recois, j'envoie)
 SerialTransfer TransferLocal;
 //pin A0 recoit des infos (elle ne sera pas utilisée)
 //pin 3 envoie des infos
 
-#define CS_RFID 10
-#define RST_RFID 7
-MFRC522 rfid(CS_RFID, RST_RFID); 
-String uidString;
+#define CS_RFID 10                      //Pin CS de l'RFID
+#define RST_RFID 7                      //Pin RST du RFID
+MFRC522 rfid(CS_RFID, RST_RFID);        //Création de l'RFID
+String uidString;                       //Variable contenant l'UID
 
-float vitesse_rotation = 1;     //définit la vitesse de rotation du tank (MAX 1)
-float vitesse = 1;              //définit la vitesse maximale du tank (MAX 1)
+float vitesse_rotation = 1;             //définit la vitesse de rotation du tank (MAX 1)
+float vitesse = 1;                      //définit la vitesse maximale du tank (MAX 1)
 
-int pin_S1 = A1; //Pin 1 du moteur 1 ; IN1
-int pin_S2 = A2; //Pin 2 du moteur 1 ; IN2
+int pin_S1 = A1;                        //Pin 1 du moteur 1 ; IN1
+int pin_S2 = A2;                        //Pin 2 du moteur 1 ; IN2
 
-int pin_S3 = A3; //Pin 1 du moteur 2 ; IN3
-int pin_S4 = A4; //Pin 2 du moteur 2 ; IN4
+int pin_S3 = A3;                        //Pin 1 du moteur 2 ; IN3
+int pin_S4 = A4;                        //Pin 2 du moteur 2 ; IN4
 
-int pin_ENA = 5; 
-int pin_ENB = 6; 
+int pin_ENA = 5;                        //Pin PWM du moteur 1
+int pin_ENB = 6;                        //Pin PWM du moteur 2
 
-int vitesse_chenille1;
-int vitesse_chenille2;
-int VRx1_val;
-int VRy1_val;
+int vitesse_chenille1;                  //Variable PWM du moteur 1
+int vitesse_chenille2;                  //Variable PWM du moteur 2
+int VRx1_val;                           //Variable correspondante à la valeur X du joystick de droite
+int VRy1_val;                           //Variable correspondante à la valeur Y du joystick de droite
 
-int trig = 2;
-int echo = 4;
-long lecture_echo;
-long distance;
+int trig = 2;                           //Pin trig de l'ultra son
+int echo = 4;                           //Pin echo de l'ultra son
+long lecture_echo;                      //variable lue par l'ultra son
+long distance;                          //variable correspondante à la distance en cm
 
 
-struct STRUCT {
-  int VRX_Gauche_ServoMoteur1 = 510;
-  int VRY_Gauche_ServoMoteur2 = 520;
-  int BP_Gauche_Tirer;
-  int VRX_Droite_Moteur1 = 510;
-  int VRY_Droite_Moteur2 = 520;
-  int RFID_State;
-  int Ultra_Distance;
+struct STRUCT {                         //Liste de données bluetooth
+  int VRX_Gauche_ServoMoteur1 = 510;    //Variable du potentiomettre de l'axe X du joystick Gauche de la manette
+  int VRY_Gauche_ServoMoteur2 = 520;    //Variable du potentiomettre de l'axe Y du joystick Gauche de la manette
+  int BP_Gauche_Tirer;                  //Variable de l'état du bouton du joystock Gauche nous permettant de tirer
+  int VRX_Droite_Moteur1 = 510;         //Variable du potentiomettre de l'axe X du joystick Droite de la manette
+  int VRY_Droite_Moteur2 = 520;         //Variable du potentiomettre de l'axe Y du joystick Droite de la manette
+  int RFID_State;                       //Variable de l'état validé ou pas de la carte RFID
+  int Ultra_Distance;                   //Variable en cm de la distance détectée
 } data;
 
-void readRFID() {
-  rfid.PICC_ReadCardSerial();
-  Serial.print("Tag UID: ");
+void readRFID() {                       //Fonction de lecture du RFID
+  rfid.PICC_ReadCardSerial();           //Lecture
+  Serial.print("Tag UID: ");            //affichage dans le serial ce texte
   uidString = String(rfid.uid.uidByte[0]) + " " + String(rfid.uid.uidByte[1]) + " " + 
   String(rfid.uid.uidByte[2]) + " " + String(rfid.uid.uidByte[3]);
-  Serial.println(uidString);
+  Serial.println(uidString);            //Affichage de l'UID précédement décripté dans le serial
 
 }
 
 void setup()
 {
-  Serial.begin(9600);
- 
+  Serial.begin(9600);                   //Création et fixation de la vitesse du serial
   
-  SerialLocal.begin(38400);
-  TransferLocal.begin(SerialLocal);
-
-  pinMode(pin_S1,OUTPUT);
+  SerialLocal.begin(38400);             //Initialisation de la communication Bluetooth
+  TransferLocal.begin(SerialLocal);     //Initialisation de la communication Bluetooth
+  //PIN des moteurs de tractions :
+  pinMode(pin_S1,OUTPUT);             
   pinMode(pin_S2,OUTPUT);
   pinMode(pin_S3,OUTPUT);
   pinMode(pin_S4,OUTPUT);
   pinMode(pin_ENA,OUTPUT);
   pinMode(pin_ENB,OUTPUT);
 
-  pinMode(trig, OUTPUT);
-  digitalWrite(trig, LOW);
-  pinMode(echo, INPUT);
+  pinMode(trig, OUTPUT);                //Trig de l'ultrason en tant que sortie
+  digitalWrite(trig, LOW);              //Trig de l'ultrason forcé à un état nul
+  pinMode(echo, INPUT);                 //echo de l'ultrason en tant que entrée
 
-  SPI.begin(); 
-  rfid.PCD_Init();
-  Serial.println("initialization done.");
-
+  SPI.begin();                          //Initialisation de la communication SPI pour manipuler le RFID
+  rfid.PCD_Init();                      //Initialisation de l'RFID
+  Serial.println("initialization done."); 
 }
-
 
 void loop()
 {
