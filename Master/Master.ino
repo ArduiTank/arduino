@@ -118,7 +118,7 @@ void loop()
   }
   
   //envoi des données de sens de rotation et vitesse aux moteurs (avec une deadband autour de la position neutre)
-  if (vitesse_chenille2 < -50) {
+  if (vitesse_chenille2 < -50) { 
     digitalWrite(pin_S2, LOW);
     digitalWrite(pin_S1, HIGH);
     analogWrite(pin_ENA, abs(vitesse_chenille2));
@@ -156,28 +156,17 @@ void loop()
     digitalWrite(pin_S4, LOW);
     digitalWrite(pin_ENB, LOW);
   }
- 
-  //Serial.println("Chenille 1 : "+String(vitesse_chenille1) + " Chenille 2 : "+String(vitesse_chenille2));
-  //J'envoie
-  data.Ultra_Distance = distance;
+  data.Ultra_Distance = distance; //liaison de la donnée bluetooth à celle correspondante par rapport à celle de la distance ultrasonique
   
   uint16_t sendSize = 0;
-  sendSize = TransferLocal.txObj(data, sendSize);
+  sendSize = TransferLocal.txObj(data, sendSize); //Emission de la trame
   TransferLocal.sendData(sendSize);
     
-  //Je recois
-  if(TransferLocal.available())
+  if(TransferLocal.available()) //Si entretemps on recoit une donnée...
   {
     uint16_t recSize = 0;
-    recSize = TransferLocal.rxObj(data, recSize);
+    recSize = TransferLocal.rxObj(data, recSize); //On la lit
   }
-
-//  Serial.print(" BP_1 : ");
-//  Serial.print(data.BP_Gauche_Tirer);
-//  Serial.print(" VRY_2 : ");
-//  Serial.print(data.VRX_Droite_Moteur1);
-//  Serial.print(" VRY_2 : ");
-//  Serial.println(data.VRY_Droite_Moteur2);
 
   delay(5);
   
