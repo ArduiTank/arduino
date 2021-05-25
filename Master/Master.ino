@@ -81,17 +81,17 @@ void setup()
 void loop()
 {
 
-  VRx1_val = map(data.VRX_Droite_Moteur1, 0, 1023, -255, 255);
-  VRy1_val = map(data.VRY_Droite_Moteur2, 0, 1023, -255, 255);
+  VRx1_val = map(data.VRX_Droite_Moteur1, 0, 1023, -255, 255);  //mise à l'échelle des valeurs lue des potentiomettres
+  VRy1_val = map(data.VRY_Droite_Moteur2, 0, 1023, -255, 255);  //mise à l'échelle des valeurs lue des potentiomettres
+  //Début de la mesure de distance via l'ultrason
+  digitalWrite(trig, HIGH);     //Envoie d'un signal ultrasonique
+  delayMicroseconds(10);        //Attente de 10us
+  digitalWrite(trig, LOW);      //Arret du signal ultrasonique
+  lecture_echo = pulseIn(echo, HIGH); //Récupération d'un signal de retout
+  distance = lecture_echo /58;  //Calcul de la distance en cm
 
-  digitalWrite(trig, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trig, LOW);
-  lecture_echo = pulseIn(echo, HIGH);
-  distance = lecture_echo /58;
-
-  if(rfid.PICC_IsNewCardPresent()) {
-    readRFID();
+  if(rfid.PICC_IsNewCardPresent()) { //Si il y a une carte sur l'RFID
+    readRFID(); //alors on la lit
   }
   
   //calcul vitesse chenille 1 et 2 en marche avant
