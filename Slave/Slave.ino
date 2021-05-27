@@ -192,7 +192,7 @@ void loop()
 
   // Chenillard lampes arrière
   if (iteration != -1) {
-    if (trigger_Clignotant_gauche == 1) { //Si nous tournons à gauche alors on active le thème correspondant
+    if (trigger_Clignotant_droite == 1) { //Si nous tournons à gauche alors on active le thème correspondant
       strip.setPixelColor(((LED_COUNT_FRONT-1)/2)-iteration, orange_red, orange_green, orange_blue);
       if (LED_COUNT_FRONT%2 == 0) {
         strip.setPixelColor((((LED_COUNT_BACK-LED_COUNT_SIDE)-1)/2+1)+LED_COUNT_SIDE+iteration, orange_red, orange_green, orange_blue);
@@ -203,7 +203,7 @@ void loop()
       strip.show();
     }
 
-  else if (trigger_Clignotant_droite == 1) { //Si nous tournons à droite alors on active le thème correspondant
+  else if (trigger_Clignotant_gauche== 1) { //Si nous tournons à droite alors on active le thème correspondant
       if (LED_COUNT_FRONT%2 == 0) {
         strip.setPixelColor(((LED_COUNT_FRONT-1)/2+1)+iteration, orange_red, orange_green, orange_blue);
       }
@@ -243,11 +243,11 @@ void loop()
   }
 
   //incrémentation tourelle_y
-  else if (yValue < -50 and tourelle_y > 67)  {                   //diminuer le chiffre de droite pour que le canon aie une meilleur dépression
+  else if (yValue < -60 and tourelle_y > 67)  {                   //diminuer le chiffre de droite pour que le canon aie une meilleur dépression
     tourelle_y -= delay_ms/1000.0 * vitesse_verticale_tourelle;   //Calcul de la position du servomteur
   }
 
-  else if (50 < yValue and tourelle_y < 135) {                    //augmenter le chiffre de droite pour que le canon aie une meilleur élévation
+  else if (60 < yValue and tourelle_y < 135) {                    //augmenter le chiffre de droite pour que le canon aie une meilleur élévation
     tourelle_y += delay_ms/1000.0 * vitesse_verticale_tourelle;   //Calcul de la position du servomteur
   }
 
