@@ -243,11 +243,11 @@ void loop()
   }
 
   //incrémentation tourelle_y
-  else if (yValue < -60 and tourelle_y > 67)  {                   //diminuer le chiffre de droite pour que le canon aie une meilleur dépression
+  else if (yValue < -75 and tourelle_y > 67)  {                   //diminuer le chiffre de droite pour que le canon aie une meilleur dépression
     tourelle_y -= delay_ms/1000.0 * vitesse_verticale_tourelle;   //Calcul de la position du servomteur
   }
 
-  else if (60 < yValue and tourelle_y < 135) {                    //augmenter le chiffre de droite pour que le canon aie une meilleur élévation
+  else if (75 < yValue and tourelle_y < 135) {                    //augmenter le chiffre de droite pour que le canon aie une meilleur élévation
     tourelle_y += delay_ms/1000.0 * vitesse_verticale_tourelle;   //Calcul de la position du servomteur
   }
 
