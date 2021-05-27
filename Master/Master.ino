@@ -35,6 +35,9 @@ int echo = 4;                           //Pin echo de l'ultra son
 long lecture_echo;                      //variable lue par l'ultra son
 long distance;                          //variable correspondante à la distance en cm
 
+float const Ratio_Vitesse_Chenille1 = 1;
+float const Ratio_Vitesse_Chenille2 = 0.8;
+
 
 struct STRUCT {                         //Liste de données bluetooth
   int VRX_Gauche_ServoMoteur1 = 510;    //Variable du potentiomettre de l'axe X du joystick Gauche de la manette
@@ -121,14 +124,14 @@ void loop()
   if (vitesse_chenille2 < -50) { 
     digitalWrite(pin_S2, LOW);
     digitalWrite(pin_S1, HIGH);
-    analogWrite(pin_ENA, abs(vitesse_chenille2));
+    analogWrite(pin_ENA, abs(vitesse_chenille2)* Ratio_Vitesse_Chenille2);
     
   }
   
   else if (vitesse_chenille2 > 50) { 
     digitalWrite(pin_S1, LOW);
     digitalWrite(pin_S2, HIGH);
-    analogWrite(pin_ENA, abs(vitesse_chenille2));
+    analogWrite(pin_ENA, abs(vitesse_chenille2)* Ratio_Vitesse_Chenille2);
     
   }
   
@@ -141,13 +144,13 @@ void loop()
   if (vitesse_chenille1 < -50) {
     digitalWrite(pin_S4, LOW);
     digitalWrite(pin_S3, HIGH);
-    analogWrite(pin_ENB, abs(vitesse_chenille1));
+    analogWrite(pin_ENB, abs(vitesse_chenille1)* Ratio_Vitesse_Chenille1);
   }
   
   else if (vitesse_chenille1 > 50) {
     digitalWrite(pin_S3, LOW);
     digitalWrite(pin_S4, HIGH);
-    analogWrite(pin_ENB, abs(vitesse_chenille1));
+    analogWrite(pin_ENB, abs(vitesse_chenille1)* Ratio_Vitesse_Chenille1);
     
   }
   
@@ -168,6 +171,5 @@ void loop()
     recSize = TransferLocal.rxObj(data, recSize); //On la lit
   }
 
-  delay(5);
   
 }
