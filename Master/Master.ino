@@ -2,6 +2,7 @@
 #include "SerialTransfer.h"             // for de bluetooth
 #include <MFRC522.h>                    // for the RFID
 #include <SPI.h>                        // for the RFID and SD card module
+#include <NewPing.h>
 
 SoftwareSerial SerialLocal(A0, 3);      // RX, TX de l'arduino (je recois, j'envoie)
 SerialTransfer TransferLocal;
@@ -32,9 +33,12 @@ int VRy1_val;                           //Variable correspondante à la valeur Y
 
 int trig = 2;                           //Pin trig de l'ultra son
 int echo = 4;                           //Pin echo de l'ultra son
-long lecture_echo;                      //variable lue par l'ultra son
-long distance;                          //variable correspondante à la distance en cm
+int MAX_DISTANCE = 350;                      //variable lue par l'ultra son
+float distance;                          //variable correspondante à la distance en cm
+float duration;
+NewPing sonar(trig, echo, MAX_DISTANCE);
 
+int CardWaiting = 1;                    //En attende d'une validation RFID : 1 ; Carte RFID validé : 0
 
 struct STRUCT {                         //Liste de données bluetooth
   int VRX_Gauche_ServoMoteur1 = 510;    //Variable du potentiomettre de l'axe X du joystick Gauche de la manette
@@ -52,7 +56,7 @@ void readRFID() {                       //Fonction de lecture du RFID
   uidString = String(rfid.uid.uidByte[0]) + " " + String(rfid.uid.uidByte[1]) + " " + 
   String(rfid.uid.uidByte[2]) + " " + String(rfid.uid.uidByte[3]);
   Serial.println(uidString);            //Affichage de l'UID précédement décripté dans le serial
-
+  CardWaiting = 0;
 }
 
 void setup()
@@ -76,23 +80,24 @@ void setup()
   SPI.begin();                          //Initialisation de la communication SPI pour manipuler le RFID
   rfid.PCD_Init();                      //Initialisation de l'RFID
   Serial.println("initialization done."); 
+  
+  while (CardWaiting) {
+    if(rfid.PICC_IsNewCardPresent()) { //Si il y a une carte sur l'RFID
+    readRFID(); //alors on la lit
+    delay(10);
+    }
+  }
 }
 
 void loop()
 {
-
+  data.RFID_State = 1; //Carte validée
+  
   VRx1_val = map(data.VRX_Droite_Moteur1, 0, 1023, -255, 255);  //mise à l'échelle des valeurs lue des potentiomettres
   VRy1_val = map(data.VRY_Droite_Moteur2, 0, 1023, -255, 255);  //mise à l'échelle des valeurs lue des potentiomettres
   //Début de la mesure de distance via l'ultrason
-  digitalWrite(trig, HIGH);     //Envoie d'un signal ultrasonique
-  delayMicroseconds(10);        //Attente de 10us
-  digitalWrite(trig, LOW);      //Arret du signal ultrasonique
-  lecture_echo = pulseIn(echo, HIGH); //Récupération d'un signal de retout
-  distance = lecture_echo /58;  //Calcul de la distance en cm
-
-  if(rfid.PICC_IsNewCardPresent()) { //Si il y a une carte sur l'RFID
-    readRFID(); //alors on la lit
-  }
+  duration = sonar.ping();
+  distance = (duration/2)*0.0343;
   
   //calcul vitesse chenille 1 et 2 en marche avant
   if (VRy1_val > 0) {
@@ -167,7 +172,5 @@ void loop()
     uint16_t recSize = 0;
     recSize = TransferLocal.rxObj(data, recSize); //On la lit
   }
-
-  delay(5);
   
 }
