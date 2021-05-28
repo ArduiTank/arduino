@@ -53,6 +53,8 @@ int trigger_marche_avant; //Variable active lorsque le joystick se penche vers l
 
 //-------------------------------- END ruban LED -------------------------------//
 
+float U_Batteries_Valeurs;        //Valeur ADC lue en volt
+int Niveau_de_charge;             //Valeur ADC lue en pourcentage
 
 //---------------------------------- Bluetooth ----------------------------------//
 
@@ -232,6 +234,8 @@ void loop()
   
   //-------------------------------- END ruban LED -------------------------------//
   
+  U_Batteries_Valeurs = analogRead(A6)*0.85;   //Lecture ADC de la tension de la batterie par l'intermédiaire d'un pont diviseur de tension
+  Niveau_de_charge = map(U_Batteries_Valeurs, 875, 750, 100, 0); //Mise à l'échelle de la tension
   
   //----------------------------------- Motors -----------------------------------//
   
@@ -280,17 +284,21 @@ void loop()
     tourelle_x = map(xValue,600,1023,0,255); //Mise à l'échelle de la valeur xValue à celle tourelle_x
   }
   analogWrite(PWM_ENABLE,tourelle_x * vitesse_rotation_tourelle); //écriture sur la pin PWM de driver la valeur mise à l'échelle
-
   //Affichage des valeurs de débugs sur le LCD
+if ((data.VRX_Gauche_ServoMoteur1 == 510) and (data.VRY_Gauche_ServoMoteur2 == 520)){
   lcd.setCursor(0,0);                                     
-  lcd.print(String(data.VRX_Gauche_ServoMoteur1)+"   ");
+  lcd.print("Waiting for a          ");
   lcd.setCursor(0,1);
-  lcd.print(String(data.VRY_Gauche_ServoMoteur2)+"   ");
-  lcd.setCursor(10,1);
-  lcd.print(String(tourelle_y)+"   ");
-  lcd.setCursor(10,0);
-  lcd.print(String(tourelle_x)+"   ");
-  
+  lcd.print("connexion...           ");
+}
+else {
+  lcd.setCursor(0,0);                                     
+  lcd.print("Let's go !        ");
+  lcd.setCursor(0,1);
+  lcd.print("Battery :  ");
+  lcd.setCursor(11,1);
+  lcd.print(String(Niveau_de_charge)+"%    " ); 
+}  
   //--------------------------------- END Motors ---------------------------------//
 
   delay(delay_ms); //Délais pouvant etre choisis tout au début du programme, tout en haut
